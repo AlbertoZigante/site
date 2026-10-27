@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import { site } from "../config/site";
+---
+<BaseLayout title="Contact">
+  <PageHeader title="Contact" lead="Questions, feedback, partnerships." />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Contact form (to be wired to email service)" h="280px" />
+      <div>
+        <Placeholder label="Address / email / hours" h="130px" />
+        <p>Email: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></p>
+        <p><a href="/legal/privacy">How we handle your data →</a> · <a href="/joiners">For joiners →</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

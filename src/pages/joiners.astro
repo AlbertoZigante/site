@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+---
+<BaseLayout title="For joiners">
+  <PageHeader title="For joiners" lead="Quote faster, cut smarter, order in one flow." />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Pain points — text" h="240px" />
+      <Placeholder kind="figure" label="Professional workflow — figure" h="240px" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap grid g3">
+      <Placeholder label="Benefit 1" />
+      <Placeholder label="Benefit 2" />
+      <Placeholder label="Benefit 3" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Testimonial / early-access form" h="150px" />
+      <p><a href="/pricing">Pricing →</a> · <a href="/contact">Talk to us →</a> · <a href="/features">Features →</a></p>
+    </div>
+  </section>
+  <CtaBand secondaryLabel="Contact us" secondaryHref="/contact" />
+</BaseLayout>

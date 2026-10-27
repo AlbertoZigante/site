@@ -1,0 +1,10 @@
+---
+// Rectangular zone to be completed later.
+// kind: "text" | "figure". h: min-height (CSS). href: makes the zone a link.
+interface Props { label?: string; kind?: "text" | "figure"; h?: string; href?: string; }
+const { label = "Content", kind = "text", h = "140px", href } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+<Tag class={`ph ph-${kind} ${href ? "ph-link" : ""}`} style={`min-height:${h}`} href={href}>
+  <span>{kind === "figure" ? "Figure" : "Text"} · {label}</span>
+</Tag>

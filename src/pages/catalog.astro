@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+const cats = ["Panels & materials", "Hinges & hardware", "Drawer systems", "Fasteners & connectors", "Edge banding", "Accessories"];
+---
+<BaseLayout title="Catalog">
+  <PageHeader title="Catalog" lead="Curated materials and hardware, ready to use in the modeller." />
+  <section class="block">
+    <div class="wrap grid g3">
+      {cats.map((c) => <Placeholder kind="figure" label={c} h="170px" />)}
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Catalog notes (suppliers, availability)" h="120px" />
+      <p><a href="/delivery-suppliers">Delivery & suppliers →</a> · <a href="/features">Features →</a></p>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

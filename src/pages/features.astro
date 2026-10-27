@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+const features = ["3D modeller", "Joints & hardware", "Cut list & nesting", "BOM & supplier parts", "Assembly instructions", "PDF / JSON export"];
+---
+<BaseLayout title="Features">
+  <PageHeader title="Features" lead="Everything between your design and your workshop." />
+  <section class="block">
+    <div class="wrap grid g3">
+      {features.map((f) => (
+        <div>
+          <Placeholder kind="figure" label={`${f} — figure`} h="150px" />
+          <div style="height:.75rem"></div>
+          <Placeholder label={`${f} — text`} h="90px" />
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <p><a href="/how-it-works">← How it works</a> · <a href="/catalog">Catalog →</a> · <a href="/pricing">Pricing →</a></p>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

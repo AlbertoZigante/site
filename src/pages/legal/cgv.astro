@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import { legal } from "../../config/site";
+---
+<BaseLayout title="Terms of sale (CGV)">
+  <PageHeader title="Terms of sale (CGV)" lead="Conditions of sale, withdrawal right, mediator (Phase 3)." badge="Phase 3" />
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Legal text — to be reviewed before GO PUBLIC" h="420px" />
+      <p>
+        {legal.map((l, i) => <><a href={l.href}>{l.label}</a>{i < legal.length - 1 && " · "}</>)}
+      </p>
+      <p><a href="/">← Home</a> · <a href="/contact">Contact →</a></p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,3 @@
+# Phase 0-1: private beta. Replace with permissive rules at GO PUBLIC.
+User-agent: *
+Disallow: /

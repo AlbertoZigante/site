@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+---
+<BaseLayout title="Pricing">
+  <PageHeader title="Pricing" lead="Free to design. Pay only when you need more." />
+  <section class="block">
+    <div class="wrap grid g3">
+      <Placeholder label="Plan — Free" h="320px" />
+      <Placeholder label="Plan — Pro" h="320px" />
+      <Placeholder label="Plan — Joiner (B2B)" h="320px" href="/joiners" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Plan comparison table" h="220px" />
+      <p><a href="/legal/cgv">Terms of sale (CGV) →</a> · <a href="/contact">Questions? Contact us →</a></p>
+    </div>
+  </section>
+  <CtaBand secondaryLabel="Features" secondaryHref="/features" />
+</BaseLayout>

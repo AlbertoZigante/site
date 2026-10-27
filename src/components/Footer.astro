@@ -1,0 +1,29 @@
+---
+import { site, nav, legal } from "../config/site";
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g4">
+      {nav.map((g) => (
+        <div>
+          <h3>{g.label}</h3>
+          <ul>{g.items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
+    <div class="grid g2" style="margin-top:1.5rem">
+      <div>
+        <h3>Legal</h3>
+        <ul>{legal.map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <h3>App</h3>
+        <ul>
+          <li><a href={site.appUrl}>Open the modeller</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">© {new Date().getFullYear()} {site.name}</p>
+  </div>
+</footer>

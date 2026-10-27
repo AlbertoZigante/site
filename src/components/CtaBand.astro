@@ -1,0 +1,15 @@
+---
+import { site } from "../config/site";
+import Placeholder from "./Placeholder.astro";
+interface Props { secondaryLabel?: string; secondaryHref?: string; }
+const { secondaryLabel = "See pricing", secondaryHref = "/pricing" } = Astro.props;
+---
+<section class="block">
+  <div class="wrap">
+    <Placeholder label="Call-to-action message" h="90px" />
+    <p style="margin-top:1rem">
+      <a class="btn" href={site.appUrl}>Open the modeller</a>
+      <a class="btn alt" href={secondaryHref}>{secondaryLabel}</a>
+    </p>
+  </div>
+</section>

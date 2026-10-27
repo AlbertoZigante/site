@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+---
+<BaseLayout title="About">
+  <PageHeader title="About" lead="Why this project exists." />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Story / mission — text" h="260px" />
+      <Placeholder kind="figure" label="Founder / workshop photo" h="260px" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Values / roadmap" h="140px" />
+      <p><a href="/contact">Contact →</a> · <a href="/legal/notice">Legal notice →</a> · <a href="/how-it-works">How it works →</a></p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+---
+<BaseLayout title="Delivery & suppliers">
+  <PageHeader title="Delivery & suppliers" badge="Phase 2" lead="Where parts come from and how they reach you. Requires live supplier integrations." />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Panel cutting suppliers — text" h="200px" />
+      <Placeholder label="Hardware suppliers — text" h="200px" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap grid g3">
+      <Placeholder kind="figure" label="Supplier logos" h="130px" />
+      <Placeholder label="Delivery times & costs" h="130px" />
+      <Placeholder label="Returns / withdrawal" h="130px" href="/legal/cgv" />
+    </div>
+    <div class="wrap"><p><a href="/catalog">← Catalog</a> · <a href="/pricing">Pricing →</a></p></div>
+  </section>
+  <CtaBand />
+</BaseLayout>

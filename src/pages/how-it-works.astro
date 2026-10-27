@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+---
+<BaseLayout title="How it works">
+  <PageHeader title="How it works" lead="From idea to ordered parts in three steps." />
+  {[1, 2, 3].map((n) => (
+    <section class="block">
+      <div class="wrap grid g2">
+        <Placeholder label={`Step ${n} — text`} h="220px" />
+        <Placeholder kind="figure" label={`Step ${n} — figure`} h="220px" />
+      </div>
+    </section>
+  ))}
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="FAQ / what you get (PDF, cut list, BOM)" h="160px" />
+      <p><a href="/features">See all features →</a> · <a href="/delivery-suppliers">Delivery & suppliers →</a></p>
+    </div>
+  </section>
+  <CtaBand secondaryLabel="Features" secondaryHref="/features" />
+</BaseLayout>
