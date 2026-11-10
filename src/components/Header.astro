@@ -1,24 +1,29 @@
 ---
-import { site, nav } from "../config/site";
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+import { site, nav, appLink } from "../config/site";
+import { useI18n, type Locale } from "../i18n";
+import LangSwitcher from "./LangSwitcher.astro";
+interface Props { lang: Locale; rest: string; }
+const { lang, rest } = Astro.props;
+const { t, l } = useI18n(lang);
 ---
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/">{site.name}</a>
-    <nav class="nav" aria-label="Main">
+    <a class="brand" href={l("/")}>{site.name}</a>
+    <nav class="nav" aria-label={t("nav.main")}>
       {nav.map((g) => (
         <div class="nav-group" tabindex="0">
-          <span>{g.label} ▾</span>
+          <span>{t(g.labelKey)} ▾</span>
           <div class="menu">
             {g.items.map((i) => (
-              <a href={i.href} aria-current={path === i.href ? "page" : undefined}>
-                {i.label}{i.phase2 && <span class="badge">Phase 2</span>}
+              <a href={l(i.href)} aria-current={rest === i.href ? "page" : undefined}>
+                {t(i.labelKey)}{i.phase2 && <span class="badge">{t("badge.phase2")}</span>}
               </a>
             ))}
           </div>
         </div>
       ))}
-      <a class="btn" href={site.appUrl}>Open the modeller</a>
+      <LangSwitcher lang={lang} rest={rest} />
+      <a class="btn" href={appLink(lang)}>{t("action.openModeller")}</a>
     </nav>
   </div>
 </header>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={t("page.realisations.title")}>
+  <PageHeader title={t("page.realisations.title")} badge={t("badge.phase2")} lead={t("page.realisations.lead")} />
+  <section class="block">
+    <div class="wrap grid g3">
+      {[1, 2, 3, 4, 5, 6].map((n) => <Placeholder kind="figure" label={`Project ${n} — photo`} h="190px" />)}
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Submit your project" h="100px" />
+      <p><a href={l("/contact")}>{t("link.contactUs")}</a> · <a href={l("/how-it-works")}>{t("link.howItWorks")}</a></p>
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</BaseLayout>

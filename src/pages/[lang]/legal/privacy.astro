@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+import Placeholder from "../../../components/Placeholder.astro";
+import { legal } from "../../../config/site";
+import { useI18n, localePaths, type Locale } from "../../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={t("page.privacy.title")}>
+  <PageHeader title={t("page.privacy.title")} lead={t("page.privacy.lead")} />
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Legal text — to be reviewed before GO PUBLIC" h="420px" />
+      <p>
+        {legal.map((item, i) => <><a href={l(item.href)}>{t(item.labelKey)}</a>{i < legal.length - 1 && " · "}</>)}
+      </p>
+      <p><a href={l("/")}>{t("link.home")}</a> · <a href={l("/contact")}>{t("link.contact")}</a></p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+const cats = ["Panels & materials", "Hinges & hardware", "Drawer systems", "Fasteners & connectors", "Edge banding", "Accessories"];
+---
+<BaseLayout lang={lang} title={t("page.catalog.title")}>
+  <PageHeader title={t("page.catalog.title")} lead={t("page.catalog.lead")} />
+  <section class="block">
+    <div class="wrap grid g3">
+      {cats.map((c) => <Placeholder kind="figure" label={c} h="170px" />)}
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Catalog notes (suppliers, availability)" h="120px" />
+      <p><a href={l("/delivery-suppliers")}>{t("link.delivery")}</a> · <a href={l("/features")}>{t("link.features")}</a></p>
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</BaseLayout>

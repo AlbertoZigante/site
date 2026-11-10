@@ -1,15 +1,18 @@
 ---
-import { site } from "../config/site";
+import { site, appLink } from "../config/site";
+import { useI18n, type Locale } from "../i18n";
 import Placeholder from "./Placeholder.astro";
-interface Props { secondaryLabel?: string; secondaryHref?: string; }
-const { secondaryLabel = "See pricing", secondaryHref = "/pricing" } = Astro.props;
+// secondaryLabel: already translated by the caller; secondaryHref: locale-less path.
+interface Props { lang: Locale; secondaryLabel?: string; secondaryHref?: string; }
+const { lang, secondaryLabel, secondaryHref = "/pricing" } = Astro.props;
+const { t, l } = useI18n(lang);
 ---
 <section class="block">
   <div class="wrap">
     <Placeholder label="Call-to-action message" h="90px" />
     <p style="margin-top:1rem">
-      <a class="btn" href={site.appUrl}>Open the modeller</a>
-      <a class="btn alt" href={secondaryHref}>{secondaryLabel}</a>
+      <a class="btn" href={appLink(lang)}>{t("action.openModeller")}</a>
+      <a class="btn alt" href={l(secondaryHref)}>{secondaryLabel ?? t("action.seePricing")}</a>
     </p>
   </div>
 </section>

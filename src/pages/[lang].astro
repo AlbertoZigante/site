@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Placeholder from "../components/Placeholder.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { site, appLink } from "../config/site";
+import { useI18n, localePaths, type Locale } from "../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={site.name}>
+  <section class="block">
+    <div class="wrap grid g2">
+      <div>
+        <h1>{t("meta.tagline")}</h1>
+        <Placeholder label="Hero text" h="120px" />
+        <p style="margin-top:1rem">
+          <a class="btn" href={appLink(lang)}>{t("action.openModeller")}</a>
+          <a class="btn alt" href={l("/how-it-works")}>{t("action.seeHowItWorks")}</a>
+        </p>
+      </div>
+      <Placeholder kind="figure" label="Hero image / modeller screenshot" h="340px" />
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>{t("home.why")}</h2>
+      <div class="grid g3">
+        <Placeholder label="Value prop 1 — design" />
+        <Placeholder label="Value prop 2 — cut list & BOM" />
+        <Placeholder label="Value prop 3 — order parts" />
+      </div>
+      <p><a href={l("/features")}>{t("link.allFeatures")}</a></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>{t("home.how")}</h2>
+      <div class="grid g3">
+        <Placeholder kind="figure" label="Step 1 — Design" href={l("/how-it-works")} h="180px" />
+        <Placeholder kind="figure" label="Step 2 — Cut list" href={l("/how-it-works")} h="180px" />
+        <Placeholder kind="figure" label="Step 3 — Order" href={l("/how-it-works")} h="180px" />
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap grid g2">
+      <div>
+        <h2>{t("home.joiners")}</h2>
+        <Placeholder label="B2B teaser text" />
+        <p><a href={l("/joiners")}>{t("link.learnMore")}</a></p>
+      </div>
+      <div>
+        <h2>{t("home.catalog")}</h2>
+        <Placeholder kind="figure" label="Catalog preview" />
+        <p><a href={l("/catalog")}>{t("link.browseCatalog")}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} />
+</BaseLayout>

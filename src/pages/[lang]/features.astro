@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+const features = ["3D modeller", "Joints & hardware", "Cut list & nesting", "BOM & supplier parts", "Assembly instructions", "PDF / JSON export"];
+---
+<BaseLayout lang={lang} title={t("page.features.title")}>
+  <PageHeader title={t("page.features.title")} lead={t("page.features.lead")} />
+  <section class="block">
+    <div class="wrap grid g3">
+      {features.map((f) => (
+        <div>
+          <Placeholder kind="figure" label={`${f} — figure`} h="150px" />
+          <div style="height:.75rem"></div>
+          <Placeholder label={`${f} — text`} h="90px" />
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <p><a href={l("/how-it-works")}>{t("link.backHowItWorks")}</a> · <a href={l("/catalog")}>{t("link.catalog")}</a> · <a href={l("/pricing")}>{t("link.pricing")}</a></p>
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</BaseLayout>

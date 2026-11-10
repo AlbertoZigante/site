@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+import { site } from "../../config/site";
+---
+<BaseLayout lang={lang} title={t("page.contact.title")}>
+  <PageHeader title={t("page.contact.title")} lead={t("page.contact.lead")} />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Contact form (to be wired to email service)" h="280px" />
+      <div>
+        <Placeholder label="Address / email / hours" h="130px" />
+        <p>{t("page.contact.email")}: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></p>
+        <p><a href={l("/legal/privacy")}>{t("link.privacyData")}</a> · <a href={l("/joiners")}>{t("link.joiners")}</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

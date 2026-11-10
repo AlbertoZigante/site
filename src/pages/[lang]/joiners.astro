@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={t("page.joiners.title")}>
+  <PageHeader title={t("page.joiners.title")} lead={t("page.joiners.lead")} />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Pain points — text" h="240px" />
+      <Placeholder kind="figure" label="Professional workflow — figure" h="240px" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap grid g3">
+      <Placeholder label="Benefit 1" />
+      <Placeholder label="Benefit 2" />
+      <Placeholder label="Benefit 3" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <Placeholder label="Testimonial / early-access form" h="150px" />
+      <p><a href={l("/pricing")}>{t("link.pricing")}</a> · <a href={l("/contact")}>{t("link.talkToUs")}</a> · <a href={l("/features")}>{t("link.features")}</a></p>
+    </div>
+  </section>
+  <CtaBand lang={lang} secondaryLabel={t("nav.contact")} secondaryHref="/contact" />
+</BaseLayout>

@@ -1,61 +1,27 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Placeholder from "../components/Placeholder.astro";
-import CtaBand from "../components/CtaBand.astro";
+// Root "/" only redirects to the visitor's language (saved choice, browser language, else English).
 import { site } from "../config/site";
 ---
-<BaseLayout title={site.name}>
-  <section class="block">
-    <div class="wrap grid g2">
-      <div>
-        <h1>{site.tagline}</h1>
-        <Placeholder label="Hero text" h="120px" />
-        <p style="margin-top:1rem">
-          <a class="btn" href={site.appUrl}>Open the modeller</a>
-          <a class="btn alt" href="/how-it-works">See how it works</a>
-        </p>
-      </div>
-      <Placeholder kind="figure" label="Hero image / modeller screenshot" h="340px" />
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <h2>Why this tool</h2>
-      <div class="grid g3">
-        <Placeholder label="Value prop 1 — design" />
-        <Placeholder label="Value prop 2 — cut list & BOM" />
-        <Placeholder label="Value prop 3 — order parts" />
-      </div>
-      <p><a href="/features">All features →</a></p>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <h2>How it works</h2>
-      <div class="grid g3">
-        <Placeholder kind="figure" label="Step 1 — Design" href="/how-it-works" h="180px" />
-        <Placeholder kind="figure" label="Step 2 — Cut list" href="/how-it-works" h="180px" />
-        <Placeholder kind="figure" label="Step 3 — Order" href="/how-it-works" h="180px" />
-      </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap grid g2">
-      <div>
-        <h2>For joiners</h2>
-        <Placeholder label="B2B teaser text" />
-        <p><a href="/joiners">Learn more →</a></p>
-      </div>
-      <div>
-        <h2>Catalog</h2>
-        <Placeholder kind="figure" label="Catalog preview" />
-        <p><a href="/catalog">Browse the catalog →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <CtaBand />
-</BaseLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{site.name}</title>
+    {site.noindex && <meta name="robots" content="noindex, nofollow" />}
+    <noscript><meta http-equiv="refresh" content="0; url=/en" /></noscript>
+    <script is:inline>
+      (function () {
+        var known = ["en", "fr", "it"], pick = "en";
+        try {
+          var saved = localStorage.getItem("lang");
+          var nav = (navigator.language || "en").slice(0, 2);
+          pick = saved && known.indexOf(saved) > -1 ? saved : known.indexOf(nav) > -1 ? nav : "en";
+        } catch (e) {}
+        location.replace("/" + pick + location.search + location.hash);
+      })();
+    </script>
+  </head>
+  <body>
+    <p><a href="/en">English</a> · <a href="/fr">Français</a> · <a href="/it">Italiano</a></p>
+  </body>
+</html>

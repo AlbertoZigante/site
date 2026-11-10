@@ -1,0 +1,22 @@
+---
+import { locales, localeNames, localePath, useI18n, type Locale } from "../i18n";
+interface Props { lang: Locale; rest: string; }
+const { lang, rest } = Astro.props;
+const { t } = useI18n(lang);
+---
+<label class="lang-switch">
+  <span class="sr-only">{t("lang.label")}</span>
+  <select id="lang-select" aria-label={t("lang.label")}>
+    {locales.map((l) => (
+      <option value={localePath(l, rest)} data-lang={l} selected={l === lang} lang={l}>{localeNames[l]}</option>
+    ))}
+  </select>
+</label>
+<script>
+  const sel = document.getElementById("lang-select") as HTMLSelectElement | null;
+  sel?.addEventListener("change", () => {
+    const opt = sel.selectedOptions[0];
+    try { localStorage.setItem("lang", opt.dataset.lang ?? ""); } catch {}
+    location.href = sel.value + location.search + location.hash;
+  });
+</script>

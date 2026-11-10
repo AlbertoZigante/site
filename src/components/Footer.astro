@@ -1,26 +1,30 @@
 ---
-import { site, nav, legal } from "../config/site";
+import { site, nav, legal, appLink } from "../config/site";
+import { useI18n, type Locale } from "../i18n";
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const { t, l } = useI18n(lang);
 ---
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g4">
       {nav.map((g) => (
         <div>
-          <h3>{g.label}</h3>
-          <ul>{g.items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul>
+          <h3>{t(g.labelKey)}</h3>
+          <ul>{g.items.map((i) => <li><a href={l(i.href)}>{t(i.labelKey)}</a></li>)}</ul>
         </div>
       ))}
     </div>
     <div class="grid g2" style="margin-top:1.5rem">
       <div>
-        <h3>Legal</h3>
-        <ul>{legal.map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul>
+        <h3>{t("legal.title")}</h3>
+        <ul>{legal.map((i) => <li><a href={l(i.href)}>{t(i.labelKey)}</a></li>)}</ul>
       </div>
       <div>
-        <h3>App</h3>
+        <h3>{t("footer.app")}</h3>
         <ul>
-          <li><a href={site.appUrl}>Open the modeller</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href={appLink(lang)}>{t("action.openModeller")}</a></li>
+          <li><a href={l("/contact")}>{t("nav.contact")}</a></li>
         </ul>
       </div>
     </div>

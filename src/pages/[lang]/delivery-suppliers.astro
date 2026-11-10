@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Placeholder from "../../components/Placeholder.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={t("page.delivery.title")}>
+  <PageHeader title={t("page.delivery.title")} badge={t("badge.phase2")} lead={t("page.delivery.lead")} />
+  <section class="block">
+    <div class="wrap grid g2">
+      <Placeholder label="Panel cutting suppliers — text" h="200px" />
+      <Placeholder label="Hardware suppliers — text" h="200px" />
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap grid g3">
+      <Placeholder kind="figure" label="Supplier logos" h="130px" />
+      <Placeholder label="Delivery times & costs" h="130px" />
+      <Placeholder label="Returns / withdrawal" h="130px" href={l("/legal/cgv")} />
+    </div>
+    <div class="wrap"><p><a href={l("/catalog")}>{t("link.backCatalog")}</a> · <a href={l("/pricing")}>{t("link.pricing")}</a></p></div>
+  </section>
+  <CtaBand lang={lang} />
+</BaseLayout>
