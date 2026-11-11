@@ -1,0 +1,302 @@
+diff --git a/src/components/AccountMenu.astro b/src/components/AccountMenu.astro
+new file mode 100644
+index 0000000..9a940f1
+--- /dev/null
++++ b/src/components/AccountMenu.astro
+@@ -0,0 +1,46 @@
++---
++import { dashboardLink } from "../config/site";
++import { useI18n, type Locale } from "../i18n";
++interface Props { lang: Locale; }
++const { lang } = Astro.props;
++const { t, l } = useI18n(lang);
++---
++<div class="account" id="account-menu" data-connect={l("/connect")} data-home={l("/")}>
++  <button class="icon-btn" type="button" id="account-btn" aria-haspopup="menu" aria-expanded="false"
++    title={t("action.account")} aria-label={t("action.account")}>
++    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
++      <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
++    </svg>
++  </button>
++  <div class="menu account-dd" id="account-dd" role="menu" hidden>
++    <a class="if-out" role="menuitem" id="connect-link" href={l("/connect")}>{t("action.connect")}</a>
++    <a class="if-in" role="menuitem" href={l("/account")}>{t("action.info")}</a>
++    <a class="if-in" role="menuitem" href={dashboardLink(lang)}>{t("action.dashboard")}</a>
++    <a class="if-in" role="menuitem" href={l("/settings")}>{t("action.settings")}</a>
++    <button class="if-in" role="menuitem" type="button" id="disconnect-btn">{t("action.disconnect")}</button>
++  </div>
++</div>
++<script>
++  const root = document.getElementById("account-menu")!;
++  const btn = document.getElementById("account-btn")!;
++  const dd = document.getElementById("account-dd")!;
++  const close = () => { dd.hidden = true; btn.setAttribute("aria-expanded", "false"); };
++  btn.addEventListener("click", () => {
++    const open = dd.hidden;
++    dd.hidden = !open;
++    btn.setAttribute("aria-expanded", String(open));
++  });
++  document.addEventListener("click", (e) => { if (!root.contains(e.target as Node)) close(); });
++  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
++
++  // Come back to the current page after connecting.
++  const connect = document.getElementById("connect-link") as HTMLAnchorElement;
++  connect.href = `${root.dataset.connect}?next=${encodeURIComponent(location.pathname)}`;
++
++  document.getElementById("disconnect-btn")!.addEventListener("click", () => {
++    try { localStorage.removeItem("dm_session"); } catch {}
++    document.documentElement.dataset.auth = "out";
++    close();
++    location.href = root.dataset.home!;
++  });
++</script>
+diff --git a/src/components/Header.astro b/src/components/Header.astro
+index 812711a..c0f524c 100644
+--- a/src/components/Header.astro
++++ b/src/components/Header.astro
+@@ -1,7 +1,8 @@
+ ---
+-import { site, nav, appLink, dashboardLink } from "../config/site";
++import { site, nav, appLink } from "../config/site";
+ import { useI18n, type Locale } from "../i18n";
+ import LangSwitcher from "./LangSwitcher.astro";
++import AccountMenu from "./AccountMenu.astro";
+ interface Props { lang: Locale; rest: string; }
+ const { lang, rest } = Astro.props;
+ const { t, l } = useI18n(lang);
+@@ -24,11 +25,7 @@ const { t, l } = useI18n(lang);
+       ))}
+       <LangSwitcher lang={lang} rest={rest} />
+       <a class="btn" href={appLink(lang)}>{t("action.openModeller")}</a>
+-      <a class="icon-btn" href={dashboardLink(lang)} title={t("action.dashboard")} aria-label={t("action.dashboard")}>
+-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+-          <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+-        </svg>
+-      </a>
++      <AccountMenu lang={lang} />
+     </nav>
+   </div>
+ </header>
+diff --git a/src/i18n/locales/en.ts b/src/i18n/locales/en.ts
+index 1d342d3..6b6880f 100644
+--- a/src/i18n/locales/en.ts
++++ b/src/i18n/locales/en.ts
+@@ -20,6 +20,11 @@ const en = {
+     openModeller: "Open the modeller",
+     seePricing: "See pricing",
+     dashboard: "My dashboard",
++    connect: "Connect",
++    info: "Info",
++    settings: "Settings",
++    disconnect: "Disconnect",
++    account: "Account",
+     seeHowItWorks: "See how it works",
+     backHome: "Back to home",
+   },
+@@ -62,6 +67,9 @@ const en = {
+     privacy: { title: "Privacy policy", lead: "GDPR-compliant privacy policy and consent notice." },
+     terms: { title: "Terms of use (CGU)", lead: "Conditions of use of the website and app." },
+     notFound: { title: "Page not found", lead: "This page does not exist." },
++    connect: { title: "Connect", lead: "Prototype sign-in (no password yet): your details stay in this browser.", name: "Name", email: "Email", submit: "Connect" },
++    account: { title: "Account info", lead: "Your account details.", name: "Name", email: "Email" },
++    settings: { title: "Settings", lead: "Preferences for your account.", language: "Language" },
+   },
+ };
+ export default en;
+diff --git a/src/i18n/locales/fr.ts b/src/i18n/locales/fr.ts
+index e2ea8af..ec312e6 100644
+--- a/src/i18n/locales/fr.ts
++++ b/src/i18n/locales/fr.ts
+@@ -22,6 +22,11 @@ const fr: Dict = {
+     openModeller: "Ouvrir le modeleur",
+     seePricing: "Voir les tarifs",
+     dashboard: "Mon tableau de bord",
++    connect: "Se connecter",
++    info: "Infos",
++    settings: "Paramètres",
++    disconnect: "Se déconnecter",
++    account: "Compte",
+     seeHowItWorks: "Voir comment ça marche",
+     backHome: "Retour à l'accueil",
+   },
+@@ -64,6 +69,9 @@ const fr: Dict = {
+     privacy: { title: "Politique de confidentialité", lead: "Politique de confidentialité conforme au RGPD et information sur le consentement." },
+     terms: { title: "Conditions générales d'utilisation (CGU)", lead: "Conditions d'utilisation du site et de l'application." },
+     notFound: { title: "Page introuvable", lead: "Cette page n'existe pas." },
++    connect: { title: "Se connecter", lead: "Connexion prototype (pas encore de mot de passe) : vos informations restent dans ce navigateur.", name: "Nom", email: "E-mail", submit: "Se connecter" },
++    account: { title: "Infos du compte", lead: "Les détails de votre compte.", name: "Nom", email: "E-mail" },
++    settings: { title: "Paramètres", lead: "Préférences de votre compte.", language: "Langue" },
+   },
+ };
+ export default fr;
+diff --git a/src/i18n/locales/it.ts b/src/i18n/locales/it.ts
+index 56885c5..262258f 100644
+--- a/src/i18n/locales/it.ts
++++ b/src/i18n/locales/it.ts
+@@ -22,6 +22,11 @@ const it: Dict = {
+     openModeller: "Apri il modellatore",
+     seePricing: "Vedi i prezzi",
+     dashboard: "La mia dashboard",
++    connect: "Accedi",
++    info: "Info",
++    settings: "Impostazioni",
++    disconnect: "Disconnetti",
++    account: "Account",
+     seeHowItWorks: "Scopri come funziona",
+     backHome: "Torna alla home",
+   },
+@@ -64,6 +69,9 @@ const it: Dict = {
+     privacy: { title: "Informativa sulla privacy", lead: "Informativa sulla privacy conforme al GDPR e avviso di consenso." },
+     terms: { title: "Termini di utilizzo (CGU)", lead: "Condizioni di utilizzo del sito e dell'app." },
+     notFound: { title: "Pagina non trovata", lead: "Questa pagina non esiste." },
++    connect: { title: "Accedi", lead: "Accesso prototipo (ancora senza password): i tuoi dati restano in questo browser.", name: "Nome", email: "Email", submit: "Accedi" },
++    account: { title: "Info account", lead: "I dettagli del tuo account.", name: "Nome", email: "Email" },
++    settings: { title: "Impostazioni", lead: "Preferenze del tuo account.", language: "Lingua" },
+   },
+ };
+ export default it;
+diff --git a/src/layouts/BaseLayout.astro b/src/layouts/BaseLayout.astro
+index 8248cc3..3d70878 100644
+--- a/src/layouts/BaseLayout.astro
++++ b/src/layouts/BaseLayout.astro
+@@ -30,6 +30,7 @@ const abs = (p: string) => new URL(p, Astro.site ?? Astro.url).href;
+     {site.noindex && <meta name="robots" content="noindex, nofollow" />}
+     {!error && locales.map((l) => <link rel="alternate" hreflang={l} href={abs(localePath(l, rest))} />)}
+     {!error && <link rel="alternate" hreflang="x-default" href={abs("/")} />}
++    <script is:inline>try{document.documentElement.dataset.auth=localStorage.getItem("dm_session")?"in":"out"}catch(e){}</script>
+     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+   </head>
+   <body>
+diff --git a/src/pages/[lang]/account.astro b/src/pages/[lang]/account.astro
+new file mode 100644
+index 0000000..57d7968
+--- /dev/null
++++ b/src/pages/[lang]/account.astro
+@@ -0,0 +1,29 @@
++---
++import BaseLayout from "../../layouts/BaseLayout.astro";
++import PageHeader from "../../components/PageHeader.astro";
++import { useI18n, localePaths, type Locale } from "../../i18n";
++export const getStaticPaths = localePaths;
++const lang = Astro.params.lang as Locale;
++const { t, l } = useI18n(lang);
++---
++<BaseLayout lang={lang} title={t("page.account.title")}>
++  <PageHeader title={t("page.account.title")} lead={t("page.account.lead")} />
++  <section class="block">
++    <div class="wrap">
++      <dl class="kv" id="account-info" data-connect={l("/connect")}>
++        <dt>{t("page.account.name")}</dt><dd id="acc-name">—</dd>
++        <dt>{t("page.account.email")}</dt><dd id="acc-email">—</dd>
++      </dl>
++    </div>
++  </section>
++</BaseLayout>
++<script>
++  const box = document.getElementById("account-info")!;
++  let s: { name?: string; email?: string } | null = null;
++  try { s = JSON.parse(localStorage.getItem("dm_session") ?? "null"); } catch {}
++  if (!s) location.replace(`${box.dataset.connect}?next=${encodeURIComponent(location.pathname)}`);
++  else {
++    document.getElementById("acc-name")!.textContent = s.name ?? "—";
++    document.getElementById("acc-email")!.textContent = s.email ?? "—";
++  }
++</script>
+diff --git a/src/pages/[lang]/connect.astro b/src/pages/[lang]/connect.astro
+new file mode 100644
+index 0000000..fd31df3
+--- /dev/null
++++ b/src/pages/[lang]/connect.astro
+@@ -0,0 +1,34 @@
++---
++import BaseLayout from "../../layouts/BaseLayout.astro";
++import PageHeader from "../../components/PageHeader.astro";
++import { useI18n, localePaths, type Locale } from "../../i18n";
++export const getStaticPaths = localePaths;
++const lang = Astro.params.lang as Locale;
++const { t, l } = useI18n(lang);
++---
++<BaseLayout lang={lang} title={t("page.connect.title")}>
++  <PageHeader title={t("page.connect.title")} lead={t("page.connect.lead")} />
++  <section class="block">
++    <div class="wrap">
++      <form class="auth-form" id="connect-form" data-home={l("/")}>
++        <label>{t("page.connect.name")}<input name="name" required autocomplete="name" /></label>
++        <label>{t("page.connect.email")}<input name="email" type="email" required autocomplete="email" /></label>
++        <button type="submit">{t("page.connect.submit")}</button>
++      </form>
++    </div>
++  </section>
++</BaseLayout>
++<script>
++  const form = document.getElementById("connect-form") as HTMLFormElement;
++  form.addEventListener("submit", (e) => {
++    e.preventDefault();
++    const d = new FormData(form);
++    try {
++      localStorage.setItem("dm_session", JSON.stringify({ name: String(d.get("name")), email: String(d.get("email")) }));
++    } catch {}
++    document.documentElement.dataset.auth = "in";
++    // Only same-site paths are accepted as the return target.
++    const next = new URLSearchParams(location.search).get("next") ?? "";
++    location.href = /^\/(?!\/)/.test(next) && !next.endsWith("/connect") ? next : form.dataset.home!;
++  });
++</script>
+diff --git a/src/pages/[lang]/settings.astro b/src/pages/[lang]/settings.astro
+new file mode 100644
+index 0000000..5b3639d
+--- /dev/null
++++ b/src/pages/[lang]/settings.astro
+@@ -0,0 +1,21 @@
++---
++import BaseLayout from "../../layouts/BaseLayout.astro";
++import PageHeader from "../../components/PageHeader.astro";
++import { locales, localeNames, localePath, useI18n, localePaths, type Locale } from "../../i18n";
++export const getStaticPaths = localePaths;
++const lang = Astro.params.lang as Locale;
++const { t, l } = useI18n(lang);
++---
++<BaseLayout lang={lang} title={t("page.settings.title")}>
++  <PageHeader title={t("page.settings.title")} lead={t("page.settings.lead")} />
++  <section class="block">
++    <div class="wrap">
++      <h2>{t("page.settings.language")}</h2>
++      <p>
++        {locales.map((x, i) => (
++          <>{i > 0 && " · "}<a href={localePath(x, "/settings")} lang={x} aria-current={x === lang ? "true" : undefined}>{localeNames[x]}</a></>
++        ))}
++      </p>
++    </div>
++  </section>
++</BaseLayout>
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 7e15ac3..3758bea 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -64,3 +64,26 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; }
+ .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 2.3rem; height: 2.3rem;
+   border: 1px solid var(--line); border-radius: 50%; color: inherit; text-decoration: none; }
+ .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
++
++/* Account dropdown (header) */
++.account { position: relative; }
++.account .icon-btn { background: #fff; cursor: pointer; padding: 0; font: inherit; }
++.account-dd { right: 0; left: auto; min-width: 180px; }
++.account-dd[hidden] { display: none; }
++.account-dd:not([hidden]) { display: block; }
++.account-dd a, .account-dd button { display: block; width: 100%; text-align: left; padding: .35rem .9rem;
++  border: 0; background: none; font: inherit; color: inherit; text-decoration: none; cursor: pointer; }
++.account-dd a:hover, .account-dd button:hover { background: var(--ph-bg); }
++.if-in { display: none !important; }
++html[data-auth="in"] .if-in { display: block !important; }
++html[data-auth="in"] .if-out { display: none !important; }
++
++/* Connect / account / settings pages */
++.auth-form { display: grid; gap: .8rem; max-width: 360px; }
++.auth-form label { display: grid; gap: .25rem; font-size: .9rem; color: var(--muted); }
++.auth-form input { font: inherit; padding: .5rem .6rem; border: 1px solid var(--line); border-radius: 6px; }
++.auth-form button { font: inherit; padding: .55rem 1rem; border: 1px solid var(--accent); border-radius: 6px;
++  background: var(--accent); color: #fff; cursor: pointer; }
++.kv { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.2rem; }
++.kv dt { color: var(--muted); }
++.kv dd { margin: 0; }

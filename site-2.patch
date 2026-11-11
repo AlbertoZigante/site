@@ -1,0 +1,164 @@
+diff --git a/src/components/AccountMenu.astro b/src/components/AccountMenu.astro
+index 9a940f1..53fc347 100644
+--- a/src/components/AccountMenu.astro
++++ b/src/components/AccountMenu.astro
+@@ -5,14 +5,13 @@ interface Props { lang: Locale; }
+ const { lang } = Astro.props;
+ const { t, l } = useI18n(lang);
+ ---
+-<div class="account" id="account-menu" data-connect={l("/connect")} data-home={l("/")}>
+-  <button class="icon-btn" type="button" id="account-btn" aria-haspopup="menu" aria-expanded="false"
+-    title={t("action.account")} aria-label={t("action.account")}>
++<div class="nav-group account" id="account-menu" tabindex="0" data-connect={l("/connect")} data-home={l("/")}>
++  <span class="icon-btn" role="button" aria-haspopup="menu" title={t("action.account")} aria-label={t("action.account")}>
+     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+       <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+     </svg>
+-  </button>
+-  <div class="menu account-dd" id="account-dd" role="menu" hidden>
++  </span>
++  <div class="menu account-dd" id="account-dd" role="menu">
+     <a class="if-out" role="menuitem" id="connect-link" href={l("/connect")}>{t("action.connect")}</a>
+     <a class="if-in" role="menuitem" href={l("/account")}>{t("action.info")}</a>
+     <a class="if-in" role="menuitem" href={dashboardLink(lang)}>{t("action.dashboard")}</a>
+@@ -22,17 +21,6 @@ const { t, l } = useI18n(lang);
+ </div>
+ <script>
+   const root = document.getElementById("account-menu")!;
+-  const btn = document.getElementById("account-btn")!;
+-  const dd = document.getElementById("account-dd")!;
+-  const close = () => { dd.hidden = true; btn.setAttribute("aria-expanded", "false"); };
+-  btn.addEventListener("click", () => {
+-    const open = dd.hidden;
+-    dd.hidden = !open;
+-    btn.setAttribute("aria-expanded", String(open));
+-  });
+-  document.addEventListener("click", (e) => { if (!root.contains(e.target as Node)) close(); });
+-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+-
+   // Come back to the current page after connecting.
+   const connect = document.getElementById("connect-link") as HTMLAnchorElement;
+   connect.href = `${root.dataset.connect}?next=${encodeURIComponent(location.pathname)}`;
+@@ -40,7 +28,6 @@ const { t, l } = useI18n(lang);
+   document.getElementById("disconnect-btn")!.addEventListener("click", () => {
+     try { localStorage.removeItem("dm_session"); } catch {}
+     document.documentElement.dataset.auth = "out";
+-    close();
+     location.href = root.dataset.home!;
+   });
+ </script>
+diff --git a/src/components/Flag.astro b/src/components/Flag.astro
+new file mode 100644
+index 0000000..249cac1
+--- /dev/null
++++ b/src/components/Flag.astro
+@@ -0,0 +1,26 @@
++---
++import type { Locale } from "../i18n";
++interface Props { lang: Locale; }
++const { lang } = Astro.props;
++---
++<span class="flag" aria-hidden="true">
++  {lang === "en" && (
++    <svg viewBox="0 0 60 40" preserveAspectRatio="none" focusable="false">
++      <rect width="60" height="40" fill="#012169" />
++      <path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8" />
++      <path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="3" />
++      <path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="12" />
++      <path d="M30 0V40M0 20H60" stroke="#C8102E" stroke-width="7" />
++    </svg>
++  )}
++  {lang === "fr" && (
++    <svg viewBox="0 0 60 40" preserveAspectRatio="none" focusable="false">
++      <rect width="20" height="40" fill="#0055A4" /><rect x="20" width="20" height="40" fill="#fff" /><rect x="40" width="20" height="40" fill="#EF4135" />
++    </svg>
++  )}
++  {lang === "it" && (
++    <svg viewBox="0 0 60 40" preserveAspectRatio="none" focusable="false">
++      <rect width="20" height="40" fill="#009246" /><rect x="20" width="20" height="40" fill="#fff" /><rect x="40" width="20" height="40" fill="#CE2B37" />
++    </svg>
++  )}
++</span>
+diff --git a/src/components/LangSwitcher.astro b/src/components/LangSwitcher.astro
+index 589f3b0..e3cba58 100644
+--- a/src/components/LangSwitcher.astro
++++ b/src/components/LangSwitcher.astro
+@@ -1,22 +1,27 @@
+ ---
+ import { locales, localeNames, localePath, useI18n, type Locale } from "../i18n";
++import Flag from "./Flag.astro";
+ interface Props { lang: Locale; rest: string; }
+ const { lang, rest } = Astro.props;
+ const { t } = useI18n(lang);
+ ---
+-<label class="lang-switch">
+-  <span class="sr-only">{t("lang.label")}</span>
+-  <select id="lang-select" aria-label={t("lang.label")}>
++<div class="nav-group lang-dd" tabindex="0">
++  <span class="lang-cur" role="button" aria-haspopup="menu" aria-label={`${t("lang.label")}: ${localeNames[lang]}`} title={t("lang.label")}>
++    <Flag lang={lang} /> ▾
++  </span>
++  <div class="menu lang-menu" role="menu">
+     {locales.map((l) => (
+-      <option value={localePath(l, rest)} data-lang={l} selected={l === lang} lang={l}>{localeNames[l]}</option>
++      <a role="menuitem" href={localePath(l, rest)} data-lang={l} lang={l} hreflang={l} aria-current={l === lang ? "true" : undefined}>
++        <Flag lang={l} />{localeNames[l]}
++      </a>
+     ))}
+-  </select>
+-</label>
++  </div>
++</div>
+ <script>
+-  const sel = document.getElementById("lang-select") as HTMLSelectElement | null;
+-  sel?.addEventListener("change", () => {
+-    const opt = sel.selectedOptions[0];
+-    try { localStorage.setItem("lang", opt.dataset.lang ?? ""); } catch {}
+-    location.href = sel.value + location.search + location.hash;
++  document.querySelectorAll<HTMLAnchorElement>(".lang-menu a[data-lang]").forEach((a) => {
++    a.href += location.search + location.hash; // keep ?query and #anchor across languages
++    a.addEventListener("click", () => {
++      try { localStorage.setItem("lang", a.dataset.lang ?? ""); } catch {}
++    });
+   });
+ </script>
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 3758bea..fbb8eac 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -57,23 +57,24 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; }
+ /* Language switcher */
+ .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+-.lang-switch select { font: inherit; padding: .25rem .5rem; border: 1px solid var(--line);
+-  border-radius: 6px; background: #fff; color: inherit; cursor: pointer; }
+ 
+ /* Account / dashboard button in the header */
+ .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 2.3rem; height: 2.3rem;
+   border: 1px solid var(--line); border-radius: 50%; color: inherit; text-decoration: none; }
+ .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+ 
+-/* Account dropdown (header) */
+-.account { position: relative; }
+-.account .icon-btn { background: #fff; cursor: pointer; padding: 0; font: inherit; }
+-.account-dd { right: 0; left: auto; min-width: 180px; }
+-.account-dd[hidden] { display: none; }
+-.account-dd:not([hidden]) { display: block; }
+-.account-dd a, .account-dd button { display: block; width: 100%; text-align: left; padding: .35rem .9rem;
+-  border: 0; background: none; font: inherit; color: inherit; text-decoration: none; cursor: pointer; }
+-.account-dd a:hover, .account-dd button:hover { background: var(--ph-bg); }
++/* Header dropdowns (language, account): same behaviour as the nav menus, overlaid so the header never resizes */
++.lang-dd, .account { outline: none; }
++.lang-menu, .account-dd { left: auto; right: 0; min-width: 160px; }
++.lang-cur { display: inline-flex; align-items: center; gap: .35rem; cursor: pointer; }
++.nav-group > .icon-btn { cursor: pointer; }
++.lang-menu a { display: flex; align-items: center; gap: .55rem; }
++.account-dd button { display: block; width: 100%; text-align: left; padding: .35rem .9rem;
++  border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
++.account-dd button:hover { background: var(--ph-bg); }
++.flag { display: inline-block; flex: none; width: 22px; height: 15px; border-radius: 2px; overflow: hidden;
++  box-shadow: 0 0 0 1px rgba(0,0,0,.18); }
++.flag svg { display: block; width: 100%; height: 100%; }
+ .if-in { display: none !important; }
+ html[data-auth="in"] .if-in { display: block !important; }
+ html[data-auth="in"] .if-out { display: none !important; }

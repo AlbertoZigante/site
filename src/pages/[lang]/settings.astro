@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { locales, localeNames, localePath, useI18n, localePaths, type Locale } from "../../i18n";
+export const getStaticPaths = localePaths;
+const lang = Astro.params.lang as Locale;
+const { t, l } = useI18n(lang);
+---
+<BaseLayout lang={lang} title={t("page.settings.title")}>
+  <PageHeader title={t("page.settings.title")} lead={t("page.settings.lead")} />
+  <section class="block">
+    <div class="wrap">
+      <h2>{t("page.settings.language")}</h2>
+      <p>
+        {locales.map((x, i) => (
+          <>{i > 0 && " · "}<a href={localePath(x, "/settings")} lang={x} aria-current={x === lang ? "true" : undefined}>{localeNames[x]}</a></>
+        ))}
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -22,6 +22,11 @@ const it: Dict = {
     openModeller: "Apri il modellatore",
     seePricing: "Vedi i prezzi",
     dashboard: "La mia dashboard",
+    connect: "Accedi",
+    info: "Info",
+    settings: "Impostazioni",
+    disconnect: "Disconnetti",
+    account: "Account",
     seeHowItWorks: "Scopri come funziona",
     backHome: "Torna alla home",
   },
@@ -64,6 +69,9 @@ const it: Dict = {
     privacy: { title: "Informativa sulla privacy", lead: "Informativa sulla privacy conforme al GDPR e avviso di consenso." },
     terms: { title: "Termini di utilizzo (CGU)", lead: "Condizioni di utilizzo del sito e dell'app." },
     notFound: { title: "Pagina non trovata", lead: "Questa pagina non esiste." },
+    connect: { title: "Accedi", lead: "Accesso prototipo (ancora senza password): i tuoi dati restano in questo browser.", name: "Nome", email: "Email", submit: "Accedi" },
+    account: { title: "Info account", lead: "I dettagli del tuo account.", name: "Nome", email: "Email" },
+    settings: { title: "Impostazioni", lead: "Preferenze del tuo account.", language: "Lingua" },
   },
 };
 export default it;

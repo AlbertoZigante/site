@@ -1,22 +1,27 @@
 ---
 import { locales, localeNames, localePath, useI18n, type Locale } from "../i18n";
+import Flag from "./Flag.astro";
 interface Props { lang: Locale; rest: string; }
 const { lang, rest } = Astro.props;
 const { t } = useI18n(lang);
 ---
-<label class="lang-switch">
-  <span class="sr-only">{t("lang.label")}</span>
-  <select id="lang-select" aria-label={t("lang.label")}>
+<div class="nav-group lang-dd" tabindex="0">
+  <span class="lang-cur" role="button" aria-haspopup="menu" aria-label={`${t("lang.label")}: ${localeNames[lang]}`} title={t("lang.label")}>
+    <Flag lang={lang} /> ▾
+  </span>
+  <div class="menu lang-menu" role="menu">
     {locales.map((l) => (
-      <option value={localePath(l, rest)} data-lang={l} selected={l === lang} lang={l}>{localeNames[l]}</option>
+      <a role="menuitem" href={localePath(l, rest)} data-lang={l} lang={l} hreflang={l} aria-current={l === lang ? "true" : undefined}>
+        <Flag lang={l} />{localeNames[l]}
+      </a>
     ))}
-  </select>
-</label>
+  </div>
+</div>
 <script>
-  const sel = document.getElementById("lang-select") as HTMLSelectElement | null;
-  sel?.addEventListener("change", () => {
-    const opt = sel.selectedOptions[0];
-    try { localStorage.setItem("lang", opt.dataset.lang ?? ""); } catch {}
-    location.href = sel.value + location.search + location.hash;
+  document.querySelectorAll<HTMLAnchorElement>(".lang-menu a[data-lang]").forEach((a) => {
+    a.href += location.search + location.hash; // keep ?query and #anchor across languages
+    a.addEventListener("click", () => {
+      try { localStorage.setItem("lang", a.dataset.lang ?? ""); } catch {}
+    });
   });
 </script>

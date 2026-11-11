@@ -30,6 +30,7 @@ const abs = (p: string) => new URL(p, Astro.site ?? Astro.url).href;
     {site.noindex && <meta name="robots" content="noindex, nofollow" />}
     {!error && locales.map((l) => <link rel="alternate" hreflang={l} href={abs(localePath(l, rest))} />)}
     {!error && <link rel="alternate" hreflang="x-default" href={abs("/")} />}
+    <script is:inline>try{document.documentElement.dataset.auth=localStorage.getItem("dm_session")?"in":"out"}catch(e){}</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>

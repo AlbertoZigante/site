@@ -20,6 +20,11 @@ const en = {
     openModeller: "Open the modeller",
     seePricing: "See pricing",
     dashboard: "My dashboard",
+    connect: "Connect",
+    info: "Info",
+    settings: "Settings",
+    disconnect: "Disconnect",
+    account: "Account",
     seeHowItWorks: "See how it works",
     backHome: "Back to home",
   },
@@ -62,6 +67,9 @@ const en = {
     privacy: { title: "Privacy policy", lead: "GDPR-compliant privacy policy and consent notice." },
     terms: { title: "Terms of use (CGU)", lead: "Conditions of use of the website and app." },
     notFound: { title: "Page not found", lead: "This page does not exist." },
+    connect: { title: "Connect", lead: "Prototype sign-in (no password yet): your details stay in this browser.", name: "Name", email: "Email", submit: "Connect" },
+    account: { title: "Account info", lead: "Your account details.", name: "Name", email: "Email" },
+    settings: { title: "Settings", lead: "Preferences for your account.", language: "Language" },
   },
 };
 export default en;

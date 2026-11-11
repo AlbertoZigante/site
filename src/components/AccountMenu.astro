@@ -1,0 +1,33 @@
+---
+import { dashboardLink } from "../config/site";
+import { useI18n, type Locale } from "../i18n";
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const { t, l } = useI18n(lang);
+---
+<div class="nav-group account" id="account-menu" tabindex="0" data-connect={l("/connect")} data-home={l("/")}>
+  <span class="icon-btn" role="button" aria-haspopup="menu" title={t("action.account")} aria-label={t("action.account")}>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+    </svg>
+  </span>
+  <div class="menu account-dd" id="account-dd" role="menu">
+    <a class="if-out" role="menuitem" id="connect-link" href={l("/connect")}>{t("action.connect")}</a>
+    <a class="if-in" role="menuitem" href={l("/account")}>{t("action.info")}</a>
+    <a class="if-in" role="menuitem" href={dashboardLink(lang)}>{t("action.dashboard")}</a>
+    <a class="if-in" role="menuitem" href={l("/settings")}>{t("action.settings")}</a>
+    <button class="if-in" role="menuitem" type="button" id="disconnect-btn">{t("action.disconnect")}</button>
+  </div>
+</div>
+<script>
+  const root = document.getElementById("account-menu")!;
+  // Come back to the current page after connecting.
+  const connect = document.getElementById("connect-link") as HTMLAnchorElement;
+  connect.href = `${root.dataset.connect}?next=${encodeURIComponent(location.pathname)}`;
+
+  document.getElementById("disconnect-btn")!.addEventListener("click", () => {
+    try { localStorage.removeItem("dm_session"); } catch {}
+    document.documentElement.dataset.auth = "out";
+    location.href = root.dataset.home!;
+  });
+</script>

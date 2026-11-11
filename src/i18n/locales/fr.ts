@@ -22,6 +22,11 @@ const fr: Dict = {
     openModeller: "Ouvrir le modeleur",
     seePricing: "Voir les tarifs",
     dashboard: "Mon tableau de bord",
+    connect: "Se connecter",
+    info: "Infos",
+    settings: "Paramètres",
+    disconnect: "Se déconnecter",
+    account: "Compte",
     seeHowItWorks: "Voir comment ça marche",
     backHome: "Retour à l'accueil",
   },
@@ -64,6 +69,9 @@ const fr: Dict = {
     privacy: { title: "Politique de confidentialité", lead: "Politique de confidentialité conforme au RGPD et information sur le consentement." },
     terms: { title: "Conditions générales d'utilisation (CGU)", lead: "Conditions d'utilisation du site et de l'application." },
     notFound: { title: "Page introuvable", lead: "Cette page n'existe pas." },
+    connect: { title: "Se connecter", lead: "Connexion prototype (pas encore de mot de passe) : vos informations restent dans ce navigateur.", name: "Nom", email: "E-mail", submit: "Se connecter" },
+    account: { title: "Infos du compte", lead: "Les détails de votre compte.", name: "Nom", email: "E-mail" },
+    settings: { title: "Paramètres", lead: "Préférences de votre compte.", language: "Langue" },
   },
 };
 export default fr;
