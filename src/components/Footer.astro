@@ -1,5 +1,5 @@
 ---
-import { site, nav, legal, appLink } from "../config/site";
+import { site, nav, legal, appLink, dashboardLink } from "../config/site";
 import { useI18n, type Locale } from "../i18n";
 interface Props { lang: Locale; }
 const { lang } = Astro.props;
@@ -24,6 +24,7 @@ const { t, l } = useI18n(lang);
         <h3>{t("footer.app")}</h3>
         <ul>
           <li><a href={appLink(lang)}>{t("action.openModeller")}</a></li>
+          <li><a href={dashboardLink(lang)}>{t("action.dashboard")}</a></li>
           <li><a href={l("/contact")}>{t("nav.contact")}</a></li>
         </ul>
       </div>

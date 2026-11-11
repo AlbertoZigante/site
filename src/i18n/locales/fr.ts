@@ -21,6 +21,7 @@ const fr: Dict = {
   action: {
     openModeller: "Ouvrir le modeleur",
     seePricing: "Voir les tarifs",
+    dashboard: "Mon tableau de bord",
     seeHowItWorks: "Voir comment ça marche",
     backHome: "Retour à l'accueil",
   },

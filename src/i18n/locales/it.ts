@@ -21,6 +21,7 @@ const it: Dict = {
   action: {
     openModeller: "Apri il modellatore",
     seePricing: "Vedi i prezzi",
+    dashboard: "La mia dashboard",
     seeHowItWorks: "Scopri come funziona",
     backHome: "Torna alla home",
   },

@@ -1,5 +1,5 @@
 ---
-import { site, nav, appLink } from "../config/site";
+import { site, nav, appLink, dashboardLink } from "../config/site";
 import { useI18n, type Locale } from "../i18n";
 import LangSwitcher from "./LangSwitcher.astro";
 interface Props { lang: Locale; rest: string; }
@@ -24,6 +24,11 @@ const { t, l } = useI18n(lang);
       ))}
       <LangSwitcher lang={lang} rest={rest} />
       <a class="btn" href={appLink(lang)}>{t("action.openModeller")}</a>
+      <a class="icon-btn" href={dashboardLink(lang)} title={t("action.dashboard")} aria-label={t("action.dashboard")}>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+        </svg>
+      </a>
     </nav>
   </div>
 </header>

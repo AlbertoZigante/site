@@ -19,6 +19,7 @@ const en = {
   action: {
     openModeller: "Open the modeller",
     seePricing: "See pricing",
+    dashboard: "My dashboard",
     seeHowItWorks: "See how it works",
     backHome: "Back to home",
   },
